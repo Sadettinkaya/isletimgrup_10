@@ -2,6 +2,7 @@
 #include <string.h>
 #include "prompt.h"
 #include "command_handler.h"
+#include "background_handler.h"
 
 #define MAX_COMMAND_LENGTH 1024
 
@@ -10,7 +11,9 @@ int main() {
 
     while (1) {
         // Tamamlanan işlemleri kontrol et
-        // Prompt göster
+        check_completed_processes();
+        
+        // Prompt göster,
         print_prompt();
         // Kullanıcıdan komut al
         if (read_command(command, MAX_COMMAND_LENGTH) < 0) {
@@ -23,6 +26,7 @@ int main() {
             break;
         }
         
+        //komutu calıstır
         execute_command(command);
         
     }

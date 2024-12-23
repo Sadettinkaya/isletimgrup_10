@@ -14,7 +14,7 @@
 # Derleyici ve bayraklar
 CC = gcc
 CFLAGS = -Wall -g
-OBJS = main.o command_handler.o io_handler.o prompt.o
+OBJS = main.o command_handler.o io_handler.o prompt.o background_handler.o
 
 all: shell
 
@@ -24,7 +24,7 @@ shell: $(OBJS)
 main.o: main.c command_handler.h prompt.h
 	$(CC) $(CFLAGS) -c main.c
 
-command_handler.o: command_handler.c command_handler.h io_handler.h
+command_handler.o: command_handler.c command_handler.h io_handler.h background_handler.h 
 	$(CC) $(CFLAGS) -c command_handler.c
 
 io_handler.o: io_handler.c io_handler.h
@@ -32,6 +32,9 @@ io_handler.o: io_handler.c io_handler.h
 
 prompt.o: prompt.c prompt.h
 	$(CC) $(CFLAGS) -c prompt.c
+
+background_handler.o: background_handler.c background_handler.h
+	$(CC) $(CFLAGS) -c background_handler.c
 
 clean:
 	rm -f shell *.o
