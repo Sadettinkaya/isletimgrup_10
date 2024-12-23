@@ -3,9 +3,9 @@
 #include "prompt.h"
 
 // Komut istemini yazdırır
-void print_prompt() {
-    printf("> ");
-    fflush(stdout);
+void print_prompt() { //girilen komutu ekrana yazdırır
+    printf("> "); //kullanıcıdan komut almak için 
+    fflush(stdout); //alınan komutu cıkış ekranına yansıtır
 }
 
 // Kullanıcıdan komut alır
