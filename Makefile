@@ -7,14 +7,11 @@
 # - ferhat
 # Ders Kodu: Oişletim sistemleri 2024 Güz
 # Ödev: Kabuk Projesi
-# Derleyici ve bayraklar
-
-
 
 # Derleyici ve bayraklar
 CC = gcc
 CFLAGS = -Wall -g
-OBJS = main.o command_handler.o io_handler.o prompt.o background_handler.o
+OBJS = main.o command_handler.o io_handler.o prompt.o background_handler.o pipe_handler.o
 
 all: shell
 
@@ -24,7 +21,7 @@ shell: $(OBJS)
 main.o: main.c command_handler.h prompt.h
 	$(CC) $(CFLAGS) -c main.c
 
-command_handler.o: command_handler.c command_handler.h io_handler.h background_handler.h 
+command_handler.o: command_handler.c command_handler.h io_handler.h pipe_handler.h background_handler.h
 	$(CC) $(CFLAGS) -c command_handler.c
 
 io_handler.o: io_handler.c io_handler.h
@@ -36,11 +33,14 @@ prompt.o: prompt.c prompt.h
 background_handler.o: background_handler.c background_handler.h
 	$(CC) $(CFLAGS) -c background_handler.c
 
+pipe_handler.o: pipe_handler.c pipe_handler.h
+	$(CC) $(CFLAGS) -c pipe_handler.c
+
 clean:
 	rm -f shell *.o
 
 help:
 	@echo "Kullanılabilir Makefile Komutları:"
-	@echo "  make          Shell uygulamasını derler."
-	@echo "  make clean    Geçici dosyaları temizler."
-	@echo "  make help     Bu yardım mesajını gösterir."
+	@echo "  make         : Shell uygulamasını derler."
+	@echo "  make clean   : Geçici dosyaları temizler."
+	@echo "  make help    : Bu yardım mesajını gösterir."

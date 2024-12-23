@@ -57,21 +57,38 @@ void execute_command(const char *command) //komutun çalıştırılmasını sağ
     pid_t pid=fork(); //yeni bir proses oluşturma 
     if(pid==0) // eğer if sıfırsa çocuk proses sürecindeyiz demektir 
     {
-        //giris yönlendirme
-        if(input_file && redirect_input(input_file)<0)   //""
-        {
-            exit(1);
+        if (input_file) {
+            int input_fd = open(input_file, O_RDONLY);
+            if (input_fd < 0) {
+                perror("Giriş dosyası açılamadı");
+                exit(1);
+            }
+            if (dup2(input_fd, STDIN_FILENO) < 0) {
+                perror("stdin yönlendirme hatası");
+                close(input_fd);
+                exit(1);
+            }
+            close(input_fd);
         }
-        // cikis yönlendirme
-        if(output_file && redirect_output(output_file) <0)
-        {
-             exit(1);
+
+        // Çıkış yönlendirme
+        if (output_file) {
+            int output_fd = open(output_file, O_WRONLY | O_CREAT | O_TRUNC, 0644);
+            if (output_fd < 0) {
+                perror("Çıkış dosyası açılamadı");
+                exit(1);
+            }
+            if (dup2(output_fd, STDOUT_FILENO) < 0) {
+                perror("stdout yönlendirme hatası");
+                close(output_fd);
+                exit(1);
+            }
+            close(output_fd);
         }
-        char *args[]={"/bin/sh", "-c", (char*)command, NULL}; //kullanıcın verdiği komutu kabukta çalıştırmak için bir dizi 
-        execvp(args[0],args) ;    //""
-        execv("/bin/sh",args); // sh kabuğu çalıştırılır ve komut gönderilir
-        perror("execv başarısız oldu");
-        exit(1); // başarısız olursa süreç sonlandırılır
+         char *args[] = {"/bin/bash", "-c", actual_command, NULL};
+        execvp(args[0], args);
+        perror("exec failed");
+        exit(1);
 
     } 
     else if(pid>0) //sıfırdan büyükse ana prosesteyiz
@@ -88,7 +105,7 @@ void execute_command(const char *command) //komutun çalıştırılmasını sağ
     }
     else
     {
-        perror("fork başarısız oldu");//hata olursa döner
+        perror("fork failed ");//hata olursa döner
     }
     
     free(cmd_copy);
