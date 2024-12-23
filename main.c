@@ -1,6 +1,7 @@
-#include <studio.h>
+#include <stdio.h>
 #include <string.h>
 #include "prompt.h"
+#include "command_handler.h"
 
 #define MAX_COMMAND_LENGTH 1024
 
@@ -21,6 +22,8 @@ int main() {
             printf("Shell sonlandırılıyor...\n");
             break;
         }
+        
+        execute_command(command);
         
     }
     return 0;

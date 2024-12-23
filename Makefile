@@ -10,18 +10,21 @@
 # Derleyici ve bayraklar
 CC = gcc
 CFLAGS = -Wall -g
-OBJS = main.o prompt.o 
+OBJS = main.o prompt.o command_handler.o
 
 all: shell
 
 shell: $(OBJS)
 	$(CC) $(CFLAGS) -o shell $(OBJS)
 
-main.o: main.c prompt.h  
+main.o: main.c prompt.h command_handler.h
 	$(CC) $(CFLAGS) -c main.c
 
 prompt.o: prompt.c prompt.h
 	$(CC) $(CFLAGS) -c prompt.c
+
+command_handler.o: command_handler.c command_handler.h
+	$(CC) $(CFLAGS) -c command_handler.c
 
 clean:
 	rm -f shell *.o
